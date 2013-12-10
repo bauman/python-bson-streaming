@@ -52,7 +52,7 @@ somewhere in the document as plaintext.
 ## Benchmark
 Unfortunately, I cannot make available the test bson file.
 
-used an 8GB bson file with ~2,500,000 documents of verying sizes
+used an 8GB bson file with ~2,500,000 documents of varying sizes
 gzipped bson file compressed to 2.1GB
 
 
