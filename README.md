@@ -33,7 +33,6 @@ The fast_string_prematch would not bother converting records that do not have "g
 somewhere in the document as plaintext.
 
 <code>
-#!/usr/bin/python
 from bsonstream import KeyValueBSONInput
 from sys import argv
 import gzip
