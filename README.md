@@ -33,22 +33,19 @@ The fast_string_prematch would not bother converting records that do not have "g
 somewhere in the document as plaintext.
 
 <code>
-from bsonstream import KeyValueBSONInput
-from sys import argv
-import gzip
-
-for file in argv[1:]:
-    f=None
-    if "gz" not in file:
-        f = open(file, 'rb')
-    else:
-        f=gzip.open(file,'rb')
-
-    stream = KeyValueBSONInput(fh=f,  fast_string_prematch="github")
-    for id, dict_data in stream:
-        if id:
-            ...process dict_data...
-
+ from bsonstream import KeyValueBSONInput
+ from sys import argv
+ import gzip
+ for file in argv[1:]:
+     f=None
+     if "gz" not in file:
+         f = open(file, 'rb')
+     else:
+         f=gzip.open(file,'rb')
+     stream = KeyValueBSONInput(fh=f,  fast_string_prematch="github")
+     for id, dict_data in stream:
+         if id:
+             ...process dict_data...
 </code>
 
 
@@ -61,20 +58,18 @@ gzipped bson file compressed to 2.1GB
 
 Without fast string matcher
 <code>
-[bauman@localhost ~]$ time ./example_map_reduce.py bson/example.bson.1.gz
- 
-real    6m55.758s
-user    6m53.541s
-sys     0m1.952s
+ [bauman@localhost ~]$ time ./example_map_reduce.py bson/example.bson.1.gz
+  real    6m55.758s
+  user    6m53.541s
+  sys     0m1.952s
 </code>
 
 With fast string matcher.  In this case, documents matching the fast string patern were present in 10% of documents, resuling in time savings not deserializing 90% of documents.  
 <code>
-[bauman@localhost ~]$ time ./example_fast_match_map_reduce.py bson/example.bson.1.gz  
-
-real    1m16.387s
-user    1m37.455s
-sys     0m17.427s
+ [bauman@localhost ~]$ time ./example_fast_match_map_reduce.py bson/example.bson.1.gz  
+ real    1m16.387s
+ user    1m37.455s
+ sys     0m17.427s
 </code>
 
 
