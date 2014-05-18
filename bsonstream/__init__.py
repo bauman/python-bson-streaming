@@ -15,13 +15,13 @@ class BSONInput(object):
     https://github.com/klbostee/typedbytes
     """
 
-    def __init__(self, fh=sys.stdin, unicode_errors='strict', fast_string_prematch=""):
+    def __init__(self, fh=sys.stdin, unicode_errors='strict', fast_string_prematch="", decode=True):
         self.fh = fh
         self.unicode_errors = unicode_errors
         self.fast_string_prematch=fast_string_prematch
         self.eof = False
+        self.decode = decode
         
-
     def _read(self):
         try:
             size_bits = self.fh.read(4)
@@ -34,14 +34,15 @@ class BSONInput(object):
             doc = None
             if self.fast_string_prematch:
                 if self.fast_string_prematch in data:
+                    if self.decode:
+                        doc = BSON(data).decode(tz_aware=True)
+            else:
+                if self.decode:
                     doc = BSON(data).decode(tz_aware=True)
                 else:
-                    doc = {"_id":0}
-            else:
-                doc = BSON(data).decode(tz_aware=True)
+                    return data #return this string rather than copying to doc var
             return doc
         except struct.error, e:
-            #print >> sys.stderr, "Parsing Length record failed: %s" % e
             self.eof = True
             raise StopIteration(e)
 
@@ -69,19 +70,13 @@ class KeyValueBSONInput(BSONInput):
         except StopIteration, e:
             print >> sys.stderr, "Key/Value Input iteration failed/stopped: %s" % e
             return None
-        if '_id' in doc:
-            return doc['_id'], doc
-        else:
-            raise struct.error("Cannot read Key '_id' from Input Doc '%s'" % doc)
+        return  doc
 
     def reads(self):
         it = self._reads()
         n = it.next
         while 1:
             doc = n()
-            if '_id' in doc:
-                yield doc['_id'], doc
-            else:
-               raise struct.error("Cannot read Key '_id' from Input Doc '%s'" % doc)
+            yield doc
 
     __iter__ = reads
