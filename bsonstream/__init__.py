@@ -36,6 +36,8 @@ class BSONInput(object):
                 if self.fast_string_prematch in data:
                     if self.decode:
                         doc = BSON(data).decode(tz_aware=True)
+                    else:
+                        return data
             else:
                 if self.decode:
                     doc = BSON(data).decode(tz_aware=True)
