@@ -43,9 +43,8 @@ somewhere in the document as plaintext.
      else:
          f=gzip.open(file,'rb')
      stream = KeyValueBSONInput(fh=f,  fast_string_prematch="github")
-     for id, dict_data in stream:
-         if id:
-             ...process dict_data...
+     for dict_data in stream:
+         ...process dict_data...
 ```
 
 
