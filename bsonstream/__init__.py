@@ -1,5 +1,4 @@
 from bson import InvalidBSON, BSON
-from bson.binary import Binary
 
 import sys
 import struct
@@ -31,19 +30,12 @@ class BSONInput(object):
                 raise struct.error("Unable to cleanly read expected BSON Chunk; EOF, underful buffer or invalid object size.")
             if data[size + 4 - 1] != "\x00":
                 raise InvalidBSON("Bad EOO in BSON Data")
-            doc = None
-            if self.fast_string_prematch:
-                if self.fast_string_prematch in data:
-                    if self.decode:
-                        doc = BSON(data).decode(tz_aware=True)
-                    else:
-                        return data
-            else:
+            if self.fast_string_prematch in data:
                 if self.decode:
-                    doc = BSON(data).decode(tz_aware=True)
+                    return BSON(data).decode(tz_aware=True)
                 else:
-                    return data #return this string rather than copying to doc var
-            return doc
+                    return data
+            raise ValueError("Unknown Error")
         except struct.error, e:
             self.eof = True
             raise StopIteration(e)
