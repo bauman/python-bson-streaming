@@ -32,7 +32,10 @@ class BSONInput(object):
                 raise InvalidBSON("Bad EOO in BSON Data")
             if self.fast_string_prematch in data:
                 if self.decode:
-                    return BSON(data).decode(tz_aware=True)
+                    try:
+                        return BSON(data).decode(tz_aware=True)
+                    except TypeError:
+                        return BSON(data).decode()
                 else:
                     return data
             raise ValueError("Unknown Error")
@@ -44,7 +47,7 @@ class BSONInput(object):
         try:
             return self._read()
         except StopIteration, e:
-            print >> sys.stderr, "Iteration Failure: %s" % e
+            #print >> sys.stderr, "Iteration Failure: %s" % e
             return None
 
     def _reads(self):
@@ -62,7 +65,7 @@ class KeyValueBSONInput(BSONInput):
         try:
             doc = self._read()
         except StopIteration, e:
-            print >> sys.stderr, "Key/Value Input iteration failed/stopped: %s" % e
+            #print >> sys.stderr, "Key/Value Input iteration failed/stopped: %s" % e
             return None
         return  doc
 
