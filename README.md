@@ -14,7 +14,7 @@ I did not want the overhead of hadoop and wanted to add a fast string prematcher
 Because the source is a NoSQL database, not all documents contain the same types of data.  
 As bson stores raw text, a fast string matcher quickly bypasses unwanted documents. 
 
-I understand this has extremely limited usage, but it worked well for my needs.
+This can be combined with [bsonsearch](https://github.com/bauman/bsonsearch) to perform mongo-like queries against raw BSON data stored on disk.
 
 ## Installation
 
