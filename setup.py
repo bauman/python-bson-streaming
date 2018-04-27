@@ -1,10 +1,22 @@
 #!/usr/bin/python
 from setuptools import setup, find_packages
 
+VERSION = "0.1.1"
+
 setup(
-    name = "python-bson-streaming",
-    version = "0.1",
-    maintainer = "Daniel Bauman",
-    maintainer_email = "Daniel.Bauman@lmco.com",
-    packages=find_packages()
+    name = "python-bsonstream",
+    version = VERSION,
+    packages=find_packages(),
+    maintainer= 'Dan Bauman',
+    maintainer_email='dan@bauman.space',
+    license='MIT',
+    url = 'https://github.com/bauman/python-bson-streaming',
+    download_url = 'https://github.com/bauman/python-bson-streaming/archive/%s.tar.gz' %(VERSION),
+    classifiers = [
+                       'License :: OSI Approved :: MIT License',
+                       'Operating System :: OS Independent',
+                       'Programming Language :: Python',
+                       'Programming Language :: Python :: 2',
+                       'Programming Language :: Python :: 3',
+],
 )
