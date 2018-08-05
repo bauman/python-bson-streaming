@@ -39,14 +39,14 @@ class BSONInput(object):
                 else:
                     return data
             raise ValueError("Unknown Error")
-        except struct.error, e:
+        except struct.error as e:
             self.eof = True
             raise StopIteration(e)
 
     def read(self):
         try:
             return self._read()
-        except StopIteration, e:
+        except StopIteration as e:
             #print >> sys.stderr, "Iteration Failure: %s" % e
             return None
 
