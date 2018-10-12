@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from setuptools import setup, find_packages
 
-VERSION = "0.1.2"
+VERSION = "0.1.3"
 
 setup(
     name = "python-bsonstream",
@@ -12,6 +12,7 @@ setup(
     license='MIT',
     url = 'https://github.com/bauman/python-bson-streaming',
     download_url = 'https://github.com/bauman/python-bson-streaming/archive/%s.tar.gz' %(VERSION),
+    install_requires = ["six", "pymongo"],
     classifiers = [
                        'License :: OSI Approved :: MIT License',
                        'Operating System :: OS Independent',
