@@ -21,9 +21,18 @@ This can be combined with [bsonsearch](https://github.com/bauman/bsonsearch) to 
 The python-bson-streaming library can be installed via the distutils setup.py script
 included at the root directory:
 
-<code>
+**Make sure you use the bson package originating from pymongo**
+You can install bson from pymongo using pip or distribution packaging.
+
+```python
+pip install pymongo 
+```
+
+
+**DO NOT INSTALL THIRD PARTY BSON** `pip install bson` - That libraray does not work 
+```
 python setup.py install
-</code>
+```
 
 ## Usage
 
@@ -42,7 +51,7 @@ somewhere in the document as plaintext.
          f = open(file, 'rb')
      else:
          f=gzip.open(file,'rb')
-     stream = KeyValueBSONInput(fh=f,  fast_string_prematch="github")
+     stream = KeyValueBSONInput(fh=f,  fast_string_prematch=b"github")
      for dict_data in stream:
          ...process dict_data...
 ```
