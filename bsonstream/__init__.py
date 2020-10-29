@@ -1,5 +1,4 @@
 from bson import InvalidBSON, BSON, codec_options
-import six
 import sys
 import struct
 
@@ -15,9 +14,14 @@ class BSONInput(object):
     https://github.com/klbostee/typedbytes
     """
 
-    def __init__(self, fh=sys.stdin, unicode_errors='strict', fast_string_prematch="", decode=True):
+    def __init__(self, fh=sys.stdin,
+                 unicode_errors: str = 'strict',
+                 fast_string_prematch: bytes = b"",
+                 decode: bool = True):
         self.fh = fh
         self.unicode_errors = unicode_errors
+        if not isinstance(fast_string_prematch, bytes):
+            raise ValueError("fast_string_prematch must be a bytes object")
         self.fast_string_prematch=fast_string_prematch
         self.eof = False
         self.decode = decode
@@ -26,18 +30,15 @@ class BSONInput(object):
     def _read(self):
         try:
             size_bits = self.fh.read(4)
-            size = struct.unpack("<i", size_bits)[0] - 4 # BSON size byte includes itself 
+            size = struct.unpack("<i", size_bits)[0] - 4  # BSON size byte includes itself
             data = size_bits + self.fh.read(size)
             if len(data) != size + 4:
                 raise struct.error("Unable to read expected BSON Chunk; " +
                                    "EOF, underful buffer or invalid object size.")
-            if six.PY3:
-                eoo = 0x00
-            else:  # six.PY2
-                eoo = "\x00"
+            eoo = 0x00
             if data[size + 4 - 1] != eoo:
                 raise InvalidBSON("Bad EOO in BSON Data")
-            if self.fast_string_prematch.encode("utf-8") in data:
+            if self.fast_string_prematch in data:
                 if self.decode:
                     try:
                         return BSON(data).decode(self.codec)
@@ -45,7 +46,6 @@ class BSONInput(object):
                         return BSON(data).decode()
                 else:
                     return data
-            raise ValueError("Unknown Error")
         except struct.error as e:
             self.eof = True
             raise StopIteration(e)
@@ -60,12 +60,18 @@ class BSONInput(object):
     def _reads(self):
         r = self._read
         while 1:
-            yield r()
+            try:
+                data = r()
+                if data:
+                    yield data
+            except StopIteration:
+                break
 
     def close(self):
         self.fh.close()
 
     __iter__ = reads = _reads
+
 
 class KeyValueBSONInput(BSONInput):
     def read(self):
@@ -78,12 +84,12 @@ class KeyValueBSONInput(BSONInput):
 
     def reads(self):
         it = self._reads()
-        if six.PY3:
-            n = it.__next__
-        else:  # six.PY2
-            n = it.next
+        n = it.__next__
         while 1:
-            doc = n()
-            yield doc
+            try:
+                doc = n()
+                yield doc
+            except StopIteration:
+                break
 
     __iter__ = reads
