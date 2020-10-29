@@ -5,7 +5,8 @@ from bsonstream import BSONInput
 fake = Faker()
 
 
-# generate 5000 fake profiles, write them all into a bson object, then read back only those with @gmail.com emails
+print("generate 5000 fake profiles, write them all into a bson object,"
+      "read back only those with @gmail.com emails")
 
 
 with open("fake_profiles.bson", "wb") as f:
@@ -24,3 +25,4 @@ with open("fake_profiles.bson", "rb") as f:
 
 
 assert found_gmails > 0
+print(f"found {found_gmails} from gmails")
