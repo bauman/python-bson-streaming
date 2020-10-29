@@ -23,6 +23,6 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: build the wheel
       run: |
-        pip install pymongo
+        pip install pymongo Faker
         cp .ci/generate_fake_data.py .
         python generate_fake_data.py

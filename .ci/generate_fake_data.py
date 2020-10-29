@@ -19,6 +19,7 @@ found_gmails = 0
 with open("fake_profiles.bson", "rb") as f:
     stream = BSONInput(fh=f, fast_string_prematch=b"@gmail.com")
     for doc in stream:
+        assert "@gmail" in doc['mail']  # bson handles the utf8 decoding by default!
         found_gmails += 1
 
 
