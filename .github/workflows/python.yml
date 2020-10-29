@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-    - name: build the wheel
+    - name: run a simple test
       run: |
         pip install pymongo Faker
         cp .ci/generate_fake_data.py .
