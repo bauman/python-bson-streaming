@@ -30,7 +30,3 @@ jobs:
         cp .ci/generate_fake_data.py .
         python3 generate_fake_data.py
 
-    - uses: actions/upload-artifact@v4
-      with:
-        name: wheel-file
-        path: ./dist/*.whl
