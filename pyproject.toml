@@ -5,7 +5,7 @@ description = "BSON stream raw data into dict or individual BSON format - python
 
 requires-python = ">=3.11"
 dependencies = [
-    "pymongo~=4.15.3"
+    "pymongo~=4.15.2"
 ]
 
 [project.urls]
