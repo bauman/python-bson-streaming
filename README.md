@@ -42,7 +42,7 @@ The fast_string_prematch would not bother converting records that do not have "g
 somewhere in the document as plaintext.
 
 ``` python
- from bsonstream import KeyValueBSONInput
+ from bsonstream import BSONInput
  from sys import argv
  import gzip
  for file in argv[1:]:
@@ -51,8 +51,26 @@ somewhere in the document as plaintext.
          f = open(file, 'rb')
      else:
          f=gzip.open(file,'rb')
-     stream = KeyValueBSONInput(fh=f,  fast_string_prematch=b"github")
+     stream = BSONInput(fh=f,  fast_string_prematch=b"github")
      for dict_data in stream:
+         ...process dict_data...
+```
+
+
+or if you are passing data to another tool that can handle raw bson (like bsonsearch), don't even bother decoding the BSON to a dict
+
+``` python
+ from bsonstream import BSONInput
+ from sys import argv
+ import gzip
+ for file in argv[1:]:
+     f=None
+     if "gz" not in file:
+         f = open(file, 'rb')
+     else:
+         f=gzip.open(file,'rb')
+     stream = BSONInput(fh=f,  fast_string_prematch=b"github")
+     for raw_bson in stream:
          ...process dict_data...
 ```
 
@@ -85,7 +103,7 @@ With fast string matcher.  In this case, documents matching the fast string pate
 ## Dependencies
 
 Required libraries
-* [python-bson] 
+* [pymongo] 
 
 
 ## Versioning

@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 VERSION = "0.1.4"
 
 setup(
-    name = "python-bsonstream",
+    name = "bsonstream",
     version = VERSION,
     packages=find_packages(),
     maintainer= 'Dan Bauman',
@@ -12,7 +12,7 @@ setup(
     license='MIT',
     url = 'https://github.com/bauman/python-bson-streaming',
     download_url = 'https://github.com/bauman/python-bson-streaming/archive/%s.tar.gz' %(VERSION),
-    install_requires = ["six", "pymongo"],
+    install_requires = ["pymongo"],
     classifiers = [
                        'License :: OSI Approved :: MIT License',
                        'Operating System :: OS Independent',
