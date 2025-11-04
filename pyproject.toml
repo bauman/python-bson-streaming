@@ -1,0 +1,31 @@
+[project]
+name = "bsonstream"
+version = "0.1.7"
+description = "BSON stream raw data into dict or individual BSON format - python"
+
+requires-python = ">=3.11"
+dependencies = [
+    "pymongo~=4.15.2"
+]
+
+[project.urls]
+GitHub = "https://github.com/bauman/python-bson-streaming"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+
+[tool.cibuildwheel.linux]
+# This command runs for the manylinux containers (based on CentOS).
+archs = ["x86_64"]
+
+
+[tool.cibuildwheel.macos]
+archs = ["x86_64", "universal2", "arm64"]
+
+
+[[tool.cibuildwheel.overrides]]
+select = "*-musllinux*"
+# This command runs for the musllinux containers (based on Alpine Linux).
+archs = ["x86_64"]

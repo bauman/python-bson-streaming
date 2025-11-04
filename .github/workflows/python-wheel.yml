@@ -1,0 +1,26 @@
+name: build the wheel
+
+on:
+  push:
+    branches: [ master, dev ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  wheelbuild:
+    runs-on:
+    - ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v5
+
+
+    - name: build and run a simple test
+      run: |
+        pip install wheel build pymongo faker
+        python3 -m build
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: wheel-file
+        path: ./dist/*.whl
