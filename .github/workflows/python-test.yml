@@ -1,4 +1,4 @@
-name: Python package
+name: test the module
 
 on:
   push:
@@ -18,15 +18,14 @@ jobs:
     - uses: actions/checkout@v5
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
 
 
     - name: run a simple test
       run: |
-        pip install wheel build pymongo faker
-        python3 -m build
+        pip install pymongo faker
         cp .ci/generate_fake_data.py .
         python3 generate_fake_data.py
 
